@@ -210,7 +210,7 @@ export default function ScrollEffects() {
       <div id="smooth-content">
 
         <section className="h-screen flex items-center justify-center bg-gray-300">
-          <h1 className="text-5xl">1️⃣ Smooth Scroll</h1>
+          <h1 className="text-5xl">Smooth Scroll</h1>
         </section>
 
         <section className="h-screen flex flex-col items-center justify-center bg-red-300">
