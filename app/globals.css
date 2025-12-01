@@ -1,5 +1,19 @@
 @import "tailwindcss";
 
+html, body {
+  height: 100%;
+  margin: 0;
+  scroll-behavior: smooth;
+  scroll-snap-type: y mandatory;
+  overflow-y: scroll;
+}
+
+section {
+  scroll-snap-align: start;
+  height: 100vh; /* fullscreen height */
+}
+
+
 :root {
   --background: #ffffff;
   --foreground: #171717;

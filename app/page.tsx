@@ -1,65 +1,281 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import { useLayoutEffect } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollSmoother } from "gsap/ScrollSmoother";
+
+gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
+
+export default function ScrollEffects() {
+  useLayoutEffect(() => {
+    // Initialize smooth scrolling
+    const smoother = ScrollSmoother.create({
+      wrapper: "#smooth-wrapper",
+      content: "#smooth-content",
+      smooth: 1.2,
+      effects: true,
+    });
+
+    // ScrollReveal with reverse
+    gsap.utils.toArray<HTMLElement>(".reveal").forEach(el => {
+      gsap.from(el, {
+        opacity: 0,
+        y: 50,
+        duration: 1,
+        scrollTrigger: {
+          trigger: el,
+          start: "top 80%",
+          end: "bottom 20%",
+          toggleActions: "play reverse play reverse",
+        },
+      });
+    });
+
+    // Parallax
+    const parallaxSection = document.querySelector<HTMLElement>(".parallax-section");
+    if (parallaxSection) {
+      const parallaxBg = parallaxSection.querySelector<HTMLElement>(".parallax-bg");
+      if (parallaxBg) {
+        gsap.to(parallaxBg, {
+          yPercent: 20,
+          ease: "none",
+          scrollTrigger: {
+            trigger: parallaxSection,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+          },
+        });
+      }
+    }
+
+    // Timeline Animation
+    const timelineSection = document.querySelector<HTMLElement>(".timeline-section");
+    if (timelineSection) {
+      const timelineText = timelineSection.querySelector<HTMLElement>(".timeline-text");
+      if (timelineText) {
+        gsap.timeline({
+          scrollTrigger: {
+            trigger: timelineSection,
+            start: "top top",
+            end: "bottom top",
+            scrub: true,
+            pin: true,
+          },
+        })
+        .fromTo(timelineText, { x: -200, opacity: 0 }, { x: 0, opacity: 1 })
+        .to(timelineText, { x: 200, opacity: 0 });
+      }
+    }
+
+    // Pinned Fade Effect
+    gsap.utils.toArray<HTMLElement>(".pinned-fade").forEach(el => {
+      gsap.fromTo(el, 
+        { opacity: 0 }, 
+        { opacity: 1, 
+          scrollTrigger: { 
+            trigger: el, 
+            start: "top center", 
+            end: "bottom center", 
+            scrub: true, 
+            pin: true 
+          } 
+        });
+    });
+
+    // 3D Scroll Effect
+    const rotate3D = document.querySelector<HTMLElement>(".rotate-3d");
+    if (rotate3D) {
+      gsap.fromTo(
+        rotate3D,
+        { rotateY: 20, rotateX: 10, scale: 0.9 },
+        {
+          rotateY: 0,
+          rotateX: 0,
+          scale: 1,
+          scrollTrigger: {
+            trigger: rotate3D,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+          },
+        }
+      );
+    }
+
+    // Scale on Scroll
+    gsap.utils.toArray<HTMLElement>(".scale-on-scroll").forEach(el => {
+      gsap.fromTo(
+        el,
+        { scale: 0.8 },
+        {
+          scale: 1,
+          scrollTrigger: { trigger: el, start: "top 80%", end: "bottom 20%", scrub: true },
+        }
+      );
+    });
+
+    // Rotate on Scroll
+    gsap.utils.toArray<HTMLElement>(".rotate-on-scroll").forEach(el => {
+      gsap.fromTo(
+        el,
+        { rotate: -15 },
+        {
+          rotate: 0,
+          scrollTrigger: { trigger: el, start: "top bottom", end: "bottom top", scrub: true },
+        }
+      );
+    });
+
+    // Staggered Reveal with reverse
+    const staggerSection = document.querySelector<HTMLElement>(".stagger-section");
+    if (staggerSection) {
+      const items = staggerSection.querySelectorAll<HTMLElement>(".stagger-item");
+      gsap.from(items, {
+        y: 50,
+        opacity: 0,
+        stagger: 0.1,
+        scrollTrigger: {
+          trigger: staggerSection,
+          start: "top 80%",
+          end: "bottom 20%",
+          toggleActions: "play reverse play reverse",
+        },
+      });
+    }
+
+    // Skew on Scroll
+    gsap.utils.toArray<HTMLElement>(".skew-on-scroll").forEach(el => {
+      gsap.to(el, {
+        skewY: 5,
+        scrollTrigger: { trigger: el, start: "top bottom", end: "bottom top", scrub: true },
+      });
+    });
+
+    // Background Color Change
+    gsap.utils.toArray<HTMLElement>(".bg-change").forEach(el => {
+      gsap.to(el, {
+        backgroundColor: "#000",
+        scrollTrigger: { trigger: el, start: "top 50%", end: "bottom 50%", scrub: true },
+      });
+    });
+
+    // Slide In From Sides
+    gsap.utils.toArray<HTMLElement>(".slide-in-left").forEach(el => {
+      gsap.from(el, {
+        x: -200,
+        opacity: 0,
+        scrollTrigger: { trigger: el, start: "top 80%", toggleActions: "play reverse play reverse" },
+      });
+    });
+    gsap.utils.toArray<HTMLElement>(".slide-in-right").forEach(el => {
+      gsap.from(el, {
+        x: 200,
+        opacity: 0,
+        scrollTrigger: { trigger: el, start: "top 80%", toggleActions: "play reverse play reverse" },
+      });
+    });
+
+    // Fade Out on Scroll
+    gsap.utils.toArray<HTMLElement>(".fade-out").forEach(el => {
+      gsap.to(el, {
+        opacity: 0,
+        scrollTrigger: { trigger: el, start: "top center", end: "bottom top", scrub: true },
+      });
+    });
+
+    // Section Snap (7 sections)
+    // const totalSections = document.querySelectorAll("section").length;
+    // ScrollTrigger.create({
+    //   snap: {
+    //     snapTo: (progress) => {
+    //       const index = Math.round(progress * (totalSections - 1));
+    //       return index / (totalSections - 1);
+    //     },
+    //     duration: 0.5,
+    //     ease: "power1.inOut",
+    //   },
+    // });
+
+    // Cleanup on unmount
+    return () => {
+      smoother.kill();
+      ScrollTrigger.getAll().forEach(t => t.kill());
+    };
+  }, []);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <div id="smooth-wrapper">
+      <div id="smooth-content">
+
+        <section className="h-screen flex items-center justify-center bg-gray-300">
+          <h1 className="text-5xl">1️⃣ Smooth Scroll</h1>
+        </section>
+
+        <section className="h-screen flex flex-col items-center justify-center bg-red-300">
+          <h1 className="text-5xl mb-6 reveal">ScrollReveal Effect</h1>
+          <p className="text-xl reveal">Fade-in and move up on scroll</p>
+        </section>
+
+        <section className="parallax-section h-screen relative overflow-hidden">
+          <div className="parallax-bg absolute top-0 left-0 w-full h-full bg-blue-500"></div>
+          <h1 className="relative z-10 text-5xl text-white flex items-center justify-center h-screen">
+            Parallax Effect
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+        </section>
+
+        <section className="h-screen flex items-center justify-center bg-green-300">
+          <h1 className="text-5xl">Section Snap Scroll</h1>
+        </section>
+
+        <section className="timeline-section h-screen flex items-center justify-center bg-yellow-300">
+          <h1 className="timeline-text text-5xl">Timeline Scroll Animation</h1>
+        </section>
+
+        <section className="pinned-fade h-screen flex items-center justify-center bg-purple-300">
+          <h1 className="text-5xl">Pinned Fade Effect</h1>
+        </section>
+
+        <section className="h-screen flex items-center justify-center bg-indigo-300 rotate-3d" style={{ perspective: "1000px" }}>
+          <h1 className="text-5xl">3D Scroll Effect</h1>
+        </section>
+
+        <section className="h-screen flex items-center justify-center bg-pink-400 scale-on-scroll">
+          <h1 className="text-5xl">Scale On Scroll</h1>
+        </section>
+
+        <section className="h-screen flex items-center justify-center bg-teal-400 rotate-on-scroll">
+          <h1 className="text-5xl">Rotate On Scroll</h1>
+        </section>
+
+        <section className="h-screen flex flex-col items-center justify-center bg-orange-400 stagger-section">
+          <h1 className="stagger-item text-4xl mb-2">Stagger Item 1</h1>
+          <h1 className="stagger-item text-4xl mb-2">Stagger Item 2</h1>
+          <h1 className="stagger-item text-4xl mb-2">Stagger Item 3</h1>
+        </section>
+
+        <section className="h-screen flex items-center justify-center bg-lime-400 skew-on-scroll">
+          <h1 className="text-5xl">Skew On Scroll</h1>
+        </section>
+
+        <section className="h-screen flex items-center justify-center bg-rose-400 bg-change">
+          <h1 className="text-5xl">Background Color Change</h1>
+        </section>
+
+        <section className="h-screen flex items-center justify-center bg-cyan-400 slide-in-left">
+          <h1 className="text-5xl">Slide In From Left</h1>
+        </section>
+
+        <section className="h-screen flex items-center justify-center bg-fuchsia-400 slide-in-right">
+          <h1 className="text-5xl">Slide In From Right</h1>
+        </section>
+
+        <section className="h-screen flex items-center justify-center bg-amber-400 fade-out">
+          <h1 className="text-5xl">Fade Out On Scroll</h1>
+        </section>
+
+      </div>
     </div>
   );
 }
